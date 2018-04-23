@@ -1,4 +1,5 @@
 import  Vue from 'vue';
+import components from '../components/components_list/index'
 export default Vue.component('componentFactory', {
   validate({ params }) {
     return !isNaN(+params.id)
@@ -12,16 +13,17 @@ export default Vue.component('componentFactory', {
     }
   },
   render: function (createElement) {
-    console.log(this.name);
+    console.log(this.name, components);
     return createElement(
       'h1',
       [
-        createElement('a', {
+        createElement(components.button, {
           style: {
             color: 'red',
             fontSize: '14px'
           },
-        }, 'vue ssr')
+        }, 'vue ssr'),
+
       ]
     )
   }
