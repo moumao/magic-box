@@ -1,7 +1,7 @@
 import  Vue from 'vue';
 import base from '~/components/common/base/index.vue'
 import componentList from '~/components/components_list/index'
-import { getMockSchema, componentFactory } from '~/utils/utils.js'
+import { getMockSchema, componentFactory, distributeData } from '~/utils/utils.js'
 
 export default Vue.component('componentFactory', {
   validate({ params }) {
@@ -17,11 +17,10 @@ export default Vue.component('componentFactory', {
     }
   },
   render: function (createElement) {
-    const { components } = this.schema;
-    console.log(componentFactory(createElement, components, componentList));
+    const { components, globalData } = this.schema;
     return createElement(
       base,
-      {},
+      distributeData(globalData),
       componentFactory(createElement, components, componentList)
     )
   }
