@@ -1,52 +1,60 @@
 export function componentFactory(createElement, components, componentList){
+  const res = [];
   if (components && Array.isArray(components)){
-    const res = components.map(component => {
+    const list = components.map(component => {
       const { type, components } = component;
-      return createElement(componentList[type], {},
+      return createElement(componentList[type], distributeData(component),
         componentFactory(createElement, components, componentList))
       });
-    return res
+    res.push(...list);
   }
+  return res;
 }
 
-export function distributeData(components){
-
+export function distributeData(component){
+  const res = {};
+  if (component && typeof component === 'object'){
+    for(let key in component){
+      if(key === 'style' || key === 'props'){
+        res[key] = component[key];
+      }
+    }
+  }
+  return res;
 }
 
 export function getMockSchema(id) {
   return {
     "data":{
-      "global":{
-          "timeline":"TikTok大咖&紅人帶你飛紅人名單",
-          "shareimage":"",
-          "useCache":true,
+      "globalData":{
       },
-
       "components":[
           {
             "type":"button",
             "style": {
-              "width":750,
-              "height":30,
-              "color":"#4DA9EB"
+              "width":"100%",
+              "height":"3rem",
+              "line-height": "3rem",
+              "color":"#4DA9EB",
+              "background-color": "rgb(58,43,147)"
+            },
+            props: {
+              innerText: 'bar'
             },
             "components":null
           },
           {
             "type":"button",
-            "style": {
-              "width":750,
-              "height":30,
-              "color":"#4DA9EB"
-            },
             "components":null
           },
           {
             "type":"button",
             "style": {
-              "width":750,
-              "height":30,
-              "color":"#4DA9EB"
+              "width":"50%",
+              "height":"5rem",
+              "line-height": "5rem",
+              "color":"#cbeb4d",
+              "background-color": "rgb(147,43,62)"
             },
             "components":null
           }
