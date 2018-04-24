@@ -1,30 +1,28 @@
 import  Vue from 'vue';
-import components from '../components/components_list/index'
+import base from '~/components/common/base/index.vue'
+import componentList from '~/components/components_list/index'
+import { getMockSchema, componentFactory } from '~/utils/utils.js'
+
 export default Vue.component('componentFactory', {
   validate({ params }) {
     return !isNaN(+params.id)
   },
   async asyncData({ params, error, query, isServer }) {
     try {
-      // const { data } = await axios.get(`https://jsonplaceholder.typicode.com/users/${+params.id}`)
-      return { name: params.id, username: params.id, email: params.id }
+      const { id } = params;
+      const { data } = await getMockSchema(id);
+      return { schema: data }
     } catch (e) {
-      error({ message: 'User not found', statusCode: 404 })
+      error({ message: 'Page not found', statusCode: 404 })
     }
   },
   render: function (createElement) {
-    console.log(this.name, components);
+    const { components } = this.schema;
+    console.log(componentFactory(createElement, components, componentList));
     return createElement(
-      'h1',
-      [
-        createElement(components.button, {
-          style: {
-            color: 'red',
-            fontSize: '14px'
-          },
-        }, 'vue ssr'),
-
-      ]
+      base,
+      {},
+      componentFactory(createElement, components, componentList)
     )
   }
 })

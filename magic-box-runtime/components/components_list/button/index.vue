@@ -1,5 +1,7 @@
 <template>
-  <div class="btn-default">按钮</div>
+  <div class="btn-default">
+    <slot>按钮</slot>
+  </div>
 </template>
 
 <script>
@@ -11,8 +13,13 @@ export default {
 
 <style>
 .btn-default{
-  width: 50px;
-  height: 20px;
-  background-color: rgb(43,126,93);
+  border-radius: 2px;
+  color: rgb(255,255,255);
+  width: 70px;
+  height: 30px;
+  background-color: rgb(61,102,85);
+  margin: 5px auto;
+  text-align: center;
+  line-height: 30px;
 }
 </style>
