@@ -7,6 +7,7 @@ export default Vue.component('componentFactory', {
   validate({ params }) {
     return !isNaN(+params.id)
   },
+
   async asyncData({ params, error, query, isServer }) {
     try {
       const { id } = params;
@@ -16,11 +17,12 @@ export default Vue.component('componentFactory', {
       error({ message: 'Page not found', statusCode: 404 })
     }
   },
+
   render: function (createElement) {
-    const { components, globalData } = this.schema;
+    const { components, baseData } = this.schema;
     return createElement(
       base,
-      distributeData(globalData),
+      distributeData(baseData),
       componentFactory(createElement, components, componentList)
     )
   }
