@@ -5,7 +5,8 @@ module.exports = {
     node: true
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
+    sourceType: "module",
   },
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
@@ -16,6 +17,9 @@ module.exports = {
   plugins: [
     'vue'
   ],
+  "ecmaFeatures": {
+        "modules": true
+  },
   // add your custom rules here
   rules: {}
 }
