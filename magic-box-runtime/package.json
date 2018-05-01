@@ -5,18 +5,21 @@
   "author": "moumao <1195358569@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "node server/index.js",
+    "dev": "pm2 start server/index.js --watch -i 1 -n magic",
     "build": "nuxt build",
     "start": "NODE_ENV=production node server/index.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "monit": "pm2 monit"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "koa": "^2.5.0",
     "koa-router": "^7.4.0",
+    "lru-cache": "^4.1.2",
     "nuxt": "^1.4.0",
+    "nuxt-edge": "^2.0.0-25410797.c2c0a48",
     "vue-easy-toast": "^1.0.5"
   },
   "devDependencies": {
