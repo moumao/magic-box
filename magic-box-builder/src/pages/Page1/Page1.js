@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import './Page1.css';
+import  styles from './Page1.css';
+import { Button } from 'antd';
 
 export default class Page1 extends Component {
     render() {
         return (
-            <div className="page-box">Page1~</div>
+            <Button type="primary" className={styles['page-box']} >Page1~</Button>
         )
     }
 }

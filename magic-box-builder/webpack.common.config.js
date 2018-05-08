@@ -3,8 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const ExtractTextPlugin = require("extract-text-webpack-plugin");
-// webpack4 无法使用
+const autoprefixer = require('autoprefixer');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 
@@ -29,10 +29,44 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: [
-                    { loader: 'style-loader' },
-                    { loader: 'css-loader' }
-                ]
+                include: path.join(__dirname, 'src'),
+                use:
+                // ExtractTextPlugin.extract(
+                    [{
+                        loader: 'style-loader'
+                      }, {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true
+                        }
+                      },{
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [
+                                autoprefixer({
+                                    browsers: [
+                                        '>1%',
+                                        'last 4 versions',
+                                        'Firefox ESR',
+                                        'not ie < 9' // React doesn't support IE8 anyway
+                                    ],
+                                    flexbox: 'no-2009',
+                                })
+                           ]
+                        },
+                      },
+                    ],
+                // )
+            },
+            {
+              test: /\.css$/,
+              include: /node_modules|antd\.css/,
+              use: [{
+                  loader: 'style-loader'
+                }, {
+                  loader: 'css-loader',
+                }
+              ],
             },
             {
                 test: /\.(js|jsx)$$/,
@@ -52,6 +86,7 @@ module.exports = {
     },
 
     plugins: [
+        // new ExtractTextPlugin('[name].[chunkhash].css'),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: path.join(__dirname, 'src/index.html')
