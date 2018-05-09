@@ -2,8 +2,9 @@ const router = require('koa-router')()
 
 router.get('/getUserInfo', async ( ctx ) => {
   ctx.body = {
-  "name": "brickspert",
-  "intro": "please give me a star"
+    "name": "user1",
+    "intro": "please give me a star",
+    "header": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
   }
 })
 
