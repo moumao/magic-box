@@ -1,0 +1,60 @@
+.layout {
+  min-height: 100vh;
+}
+.logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255,255,255,.2);
+  margin: 16px 24px 16px 0;
+  float: left;
+  line-height: 31px;
+  text-align: center;
+  color: #fff;
+  border-radius: 3px;
+  font-size: 18px;
+}
+.manage {
+  float: right;
+  margin-right: 16px;
+}
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+}
+.Content-bg {
+  padding: 0 50px;
+}
+.Content {
+  background: #fff;
+  margin-top: 88px;
+  padding: 24px;
+  min-height: 280px;
+}
+.manage-avatar {
+  background: rgba(255,255,255,.2);
+}
+.entrance {
+  float: right;
+  margin-right: 16px;
+  line-height: 64px;
+  color: #fff;
+}
+.entrance-item {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.login-form {
+  margin: 0 auto;
+  min-width: 350px;
+  max-width: 500px
+}
+.login-form-button {
+  width: 70%;
+  display: block;
+  margin: 0 auto;
+}
+.footer {
+  text-align: center;
+}

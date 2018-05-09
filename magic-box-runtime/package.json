@@ -19,6 +19,7 @@
     "koa-router": "^7.4.0",
     "koa2-cors": "^2.0.5",
     "lru-cache": "^4.1.2",
+    "mysql": "^2.15.0",
     "nuxt": "^1.4.0",
     "nuxt-edge": "^2.0.0-25410797.c2c0a48",
     "vue-easy-toast": "^1.0.5"
