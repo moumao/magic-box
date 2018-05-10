@@ -25,16 +25,33 @@ class NormalLoginForm extends Component {
   render() {
     const { loading } = this.state;
     const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
+
     return (
       <Form onSubmit={this.handleSubmit} className={styles['login-form']}>
-        <Item>
+        <Item
+          {...formItemLayout}
+          label="UserName"
+        >
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: 'Please input your username!' }],
           })(
             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
           )}
         </Item>
-        <Item>
+        <Item
+          {...formItemLayout}
+          label="Password"
+        >
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your Password!' }],
           })(

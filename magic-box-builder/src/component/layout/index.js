@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {getUserInfo} from "actions/userInfo";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getUserInfo } from "actions/user";
 import WrappedNormalLoginForm from './loginForm'
 import WrappedNormalSigninForm from './signinForm'
 import { Menu, Dropdown, Button, Layout, Avatar, Modal } from 'antd';
@@ -55,14 +55,12 @@ const UserEntrance = ({ loginVisible, showLoginModal, loginHandleSubmit, loginHa
   )
 }
 
-const mapStateToProps = ({ userInfo }) => ({ userInfo });
+const mapStateToProps = ({ user }) => ({ user });
 
 const mapDispatchToProps = dispatch => {
-    return {
-        getUserInfo: () => {
-            dispatch(getUserInfo())
-        }
-    }
+  return {
+    getUserInfo: () => dispatch(getUserInfo())
+  }
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -111,14 +109,14 @@ export default class MainLayout extends Component {
   }
 
   componentDidMount() {
-    const { userInfo, getUserInfo } = this.props;
-    const { hasLogin } = userInfo;
+    const { user, getUserInfo } = this.props;
+    const { hasLogin } = user;
     hasLogin && getUserInfo();
   }
 
   render() {
     const { loginVisible, signinVisible } = this.state;
-    const { userInfo, hasLogin } = this.props.userInfo;
+    const { userInfo, hasLogin } = this.props.user;
 
     return (
       <Layout className={styles['layout']}>

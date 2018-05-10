@@ -8,6 +8,7 @@
     "react-hot-loader/babel",
     "transform-runtime",
     "transform-decorators-legacy",
+    "transform-async-to-module-method",
     ["import", {
         "libraryName": "antd",
         "style": "css"

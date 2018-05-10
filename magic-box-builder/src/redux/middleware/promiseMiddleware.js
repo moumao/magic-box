@@ -11,6 +11,7 @@ export default  store => next => action => {
     const {
         promise,
         types,
+        filterResult,
         afterSuccess,
         ...rest
     } = action;
@@ -21,21 +22,22 @@ export default  store => next => action => {
     }
 
     /*解析types*/
-    const [REQUEST,
-        SUCCESS,
-        FAILURE] = types;
+    const { requset, success, fail } = types;
 
     /*开始请求的时候，发一个action*/
     next({
         ...rest,
-        type: REQUEST
+        type: requset
     });
     /*定义请求成功时的方法*/
     const onFulfilled = result => {
+        if (filterResult) {
+            result = filterResult(result)
+        }
         next({
             ...rest,
             result,
-            type: SUCCESS
+            type: success
         });
         if (afterSuccess) {
             afterSuccess(dispatch, getState, result);
@@ -46,8 +48,9 @@ export default  store => next => action => {
         next({
             ...rest,
             error,
-            type: FAILURE
+            type: fail
         });
+        res;
     };
 
     return promise(axios).then(onFulfilled, onRejected).catch(error => {
