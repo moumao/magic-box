@@ -3,11 +3,11 @@ const { query } = require('../util/db')
 
 async function selectAllData(name) {
   const sql = `SELECT * FROM user WHERE name='${name}'`
-  const dataList = await query( sql )
+  const dataList = await query(sql)
   return dataList
 }
 
-router.get('/getUserInfo', async ( ctx ) => {
+router.get('/getUserInfo', async (ctx) => {
   const ctx_query = ctx.query
   const { name } = ctx_query
   const dataList = await selectAllData(name)
