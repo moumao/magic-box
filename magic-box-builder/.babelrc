@@ -8,7 +8,10 @@
     "react-hot-loader/babel",
     "transform-runtime",
     "transform-decorators-legacy",
-    "transform-async-to-module-method",
+    ["transform-async-to-module-method", {
+      "module": "bluebird",
+      "method": "coroutine"
+    }],
     ["import", {
         "libraryName": "antd",
         "style": "css"

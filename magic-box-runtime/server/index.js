@@ -1,21 +1,11 @@
 const Koa = require('koa')
 const { Nuxt, Builder } = require('nuxt')
-const cors = require('koa2-cors');
 const app = new Koa();
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3001
 
-app.use(cors({
-  origin: function(ctx) {
-    return '*';
-  },
-  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-  maxAge: 5,
-  credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}))
-
+require('./middleware/cors')(app)
+require('./middleware/session')(app)
 
 const api = require('./api/index')
 app.use(api.routes()).use(api.allowedMethods())

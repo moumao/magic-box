@@ -2,22 +2,24 @@ import React, {Component} from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import styles from './index.css';
 
-const { Item } = Form;
+const { Item, create} = Form;
 
-class NormalLoginForm extends Component {
+@create()
+export default class WrappedNormalLoginForm extends Component {
   state = {
     loading: false
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e =>  {
     e.preventDefault();
     const { form, loginHandleSubmit } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
         this.setState({ loading: true });
         setTimeout(() => {
-          this.setState({ loading: false }, loginHandleSubmit.bind(null, values));
-        }, 3000);
+          this.setState({ loading: false })
+          loginHandleSubmit(values)
+        }, 500);
       }
     });
   }
@@ -33,6 +35,18 @@ class NormalLoginForm extends Component {
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 },
+      },
+    };
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 8,
+        },
       },
     };
 
@@ -58,13 +72,15 @@ class NormalLoginForm extends Component {
             <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
           )}
         </Item>
-        <Item style={{margin: 0}}>
+        <Item {...tailFormItemLayout} style={{margin: 0}}>
           {getFieldDecorator('remember', {
             valuePropName: 'checked',
             initialValue: true,
           })(
             <Checkbox>Remember me</Checkbox>
           )}
+        </Item>
+        <Item style={{margin: 0}}>
           <Button type="primary" htmlType="submit" loading={loading} className={styles['login-form-button']}>
             Log in
           </Button>
@@ -73,7 +89,3 @@ class NormalLoginForm extends Component {
     );
   }
 }
-
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
-
-export default WrappedNormalLoginForm;

@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import styles from './index.css';
 
-const { Item } = Form;
+const { Item, create } = Form;
 
-class NormalSigninForm extends Component {
+@create()
+export default class WrappedNormalSigninForm extends Component {
   state = {
     loading: false,
     confirmDirty: false,
@@ -40,7 +41,7 @@ class NormalSigninForm extends Component {
         this.setState({ loading: true });
         setTimeout(() => {
           this.setState({ loading: false }, signinHandleSubmit.bind(null, values));
-        }, 3000);
+        }, 500);
       }
     });
   }
@@ -101,14 +102,10 @@ class NormalSigninForm extends Component {
         </Item>
         <Item style={{margin: 0}}>
           <Button type="primary" htmlType="submit" loading={loading} className={styles['login-form-button']}>
-            Log in
+            sign in
           </Button>
         </Item>
       </Form>
     );
   }
 }
-
-const WrappedNormalSigninForm = Form.create()(NormalSigninForm);
-
-export default WrappedNormalSigninForm;
