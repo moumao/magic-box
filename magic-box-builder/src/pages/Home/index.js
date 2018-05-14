@@ -42,7 +42,8 @@ export default class Home extends Component {
     }
 
     render() {
-        const { user, schema, deleteSchemaById } = this.props;
+        const { user, schema, deleteSchemaById, history } = this.props;
+        const { push } = history;
         const { schemaList } = schema;
         const { userInfo, hasLogin } = user;
 
@@ -55,11 +56,11 @@ export default class Home extends Component {
                           <div>
                             <Row type="flex" align="middle">
                                 <Col span={6}>
-                                  <AddCard userInfo={userInfo}/>
+                                    <AddCard userInfo={userInfo} push={push}/>
                                 </Col>
                                 {schemaList.map(item => (
                                   <Col span={6}>
-                                    <PageCard deleteSchemaById={deleteSchemaById} schemaData={item}/>
+                                    <PageCard deleteSchemaById={deleteSchemaById} schemaData={item} push={push}/>
                                   </Col>
                                 ))}
                             </Row>
