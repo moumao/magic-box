@@ -1,4 +1,4 @@
-export function componentFactory(createElement, components, componentList){
+export const componentFactory = (createElement, components, componentList) => {
   const res = [];
   if (components && Array.isArray(components)){
     const list = components.map(component => {
@@ -11,7 +11,7 @@ export function componentFactory(createElement, components, componentList){
   return res
 }
 
-export function distributeData(data){
+export const distributeData = data => {
   const res = {};
   if (data && typeof data === 'object'){
     for(let key in data){
@@ -29,13 +29,21 @@ export function distributeData(data){
   return res
 }
 
-export function getComponent(componentList, type) {
+export const getComponent = (componentList, type) => {
   if(type === 'div'){
     return type
   }
   return componentList[type]
 }
 
-export function getFunction(fun) {
+export const getFunction = fun => {
   return () => eval(fun);
+}
+
+export const jsonToObjEscape = str =>  {
+    return str.replace("\\n", "\\\\n").replace("\\r", "\\\\r").replace("\\t", "\\\\t");
+}
+
+export const objTojsonEscape = str =>  {
+    return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
 }

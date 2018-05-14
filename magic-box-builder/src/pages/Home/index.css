@@ -1,0 +1,29 @@
+.title {
+  color: rgba(87,85,85,.7);
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+.page-card {
+  width: 300px;
+  min-height: 530px;
+  margin: 30px auto;
+  position: relative;
+}
+.add-box {
+  width: 300px;
+  height: 530px;
+  margin: 30px auto;
+  cursor: pointer;
+}
+.add-card {
+  margin: 192px auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  border: 0;
+  cursor: pointer;
+  background-image: url(static/home/add.png);
+  background-size: contain;
+  background-repeat:no-repeat;
+  background-position:center;
+}
