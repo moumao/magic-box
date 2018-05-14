@@ -10,9 +10,6 @@ module.exports = app => {
       database :  'magic_box'
     })
 
-    // var stringTime = "2018-6-19 10:21:12";
-    // var timestamp2 = Date.parse(new Date(stringTime));
-    // console.log(timestamp2);
     const cookie = {              // 与 cookie 相关的配置
             domain: 'magic.com',  // 写cookie所在的域名
             path: '/',            // 写cookie所在的路径

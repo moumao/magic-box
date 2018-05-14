@@ -5,14 +5,14 @@ import MainLayout from 'component/layout'
 
 import Home from 'bundle-loader?lazy&name=home!pages/Home/Home';
 
-const Loading = function () {
+const Loading = () => {
     return <div>Loading...</div>
 };
 
-const createComponent = (component) => (props) => (
+const createComponent = component => props => (
     <Bundle load={component}>
         {
-            (Component) => Component ? <Component {...props} /> : <Loading/>
+            Component => Component ? <Component {...props} /> : <Loading/>
         }
     </Bundle>
 );
@@ -20,12 +20,6 @@ const createComponent = (component) => (props) => (
 const getRouter = () => (
     <Router>
         <div>
-            {/* <ul>
-                <li><Link to="/">首页</Link></li>
-                <li><Link to="/page1">Page1</Link></li>
-                <li><Link to="/counter">Counter</Link></li>
-                <li><Link to="/userinfo">UserInfo</Link></li>
-            </ul> */}
             <MainLayout>
                 <Switch>
                     <Route exact path="/" component={createComponent(Home)}/>

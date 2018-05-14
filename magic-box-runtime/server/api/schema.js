@@ -1,61 +1,49 @@
 const router = require('koa-router')()
+const { query } = require('../util/db')
 
-router.get('/getById', async ( ctx ) => {
-  ctx.body = {
-    "baseData": {
+const selectByUser = async value => {
+    const sql = `SELECT * FROM page WHERE author=?`
+    const dataList = await query(sql, value)
+    return dataList
+}
 
-    },
-    "meta": {
+const selectById = async value => {
+    const sql = `SELECT * FROM page WHERE id=?`
+    const dataList = await query(sql, value)
+    return dataList
+}
 
-    },
-    "components": [
-        {
-          "type": "div",
-          "data": null,
-          "components": [{
-            "type": "button",
-            "data": {
-              "style": {
-                "width": "100%",
-                "height": "3rem",
-                "line-height": "3rem",
-                "color":"#4DA9EB",
-                "background-color": "rgb(58,43,147)"
-              },
-              "nativeOn": {
-                "click": "console.log('hhhh');alert('aaa')"
-              },
-              "props": {
-                "innerText": "bar"
-              }
-            },
-            "components": null
-          }, {
-            "type": "div",
-            "data": {
-              "style": {
-                "width": "100%",
-                "height": "10rem",
-                "background-color": "rgb(145,147,43)"
-              }
-            },
-            "components":[{
-              "type":"button",
-              "data": {
-                "style": {
-                  "width": "50%",
-                  "height": "5rem",
-                  "line-height": "5rem",
-                  "color":"#cbeb4d",
-                  "background-color": "rgb(147,43,62)"
-                }
-              },
-              "components": null
-            }],
-          }],
-        }
-    ]
-    }
+const deleteById = async value => {
+    const sql = `DELETE FROM page WHERE id=?`
+    const dataList = await query(sql, value)
+    return dataList
+}
+
+router.get('/getByUser', async ctx => {
+    const { session } = ctx
+    const { userName, isLogin } = session
+    const dataList = await selectByUser([userName])
+    const body = { 'state_code': '0', schemaData: dataList }
+    ctx.body = body
+})
+
+router.get('/getById', async ctx => {
+    const { query } = ctx
+    const { id } = query
+    const dataList = await selectById([id])
+    const body = dataList.length === 0 ? { 'state_code': 'no such page' } : { 'state_code': '0', schemaData: dataList[0] }
+    ctx.body = body
+})
+
+router.get('/deleteById', async ctx => {
+    const { session } = ctx
+    const { userName } = session
+    const { query } = ctx
+    const { id } = query
+    const dataList = await deleteById([id])
+    const newDataList = await selectByUser([userName])
+    const body = { 'state_code': '0', schemaData: newDataList }
+    ctx.body = body
 })
 
 module.exports = router

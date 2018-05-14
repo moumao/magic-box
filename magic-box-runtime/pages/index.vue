@@ -1,7 +1,7 @@
 <template>
   <div>
     vue ssr
-    <nuxt-link to="/2222">Go to Foo</nuxt-link>
+    <nuxt-link to="/1">Go to Foo</nuxt-link>
     <div @click="showToast">
       show
     </div>
