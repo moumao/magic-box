@@ -1,0 +1,36 @@
+
+.iframe{
+  border: .8px solid rgba(159,159,159,.4);
+  box-shadow: 0 0 15px  rgba(159,159,159,.4);
+  margin: 20px auto;
+}
+.component-list {
+  width: 48px;
+  margin: 20px 30px;
+}
+.component-box {
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.component-box:last-child {
+  margin: 0;
+}
+.base-data {
+    padding: 15px;
+}
+.schema-data {
+    padding: 15px;
+}
+.schema-data-edit {
+    width: 100%;
+    height: 800px;
+}
+.schema-data-btn {
+    float:right;
+    margin-top: 10px;
+}

@@ -1,11 +1,14 @@
 const Koa = require('koa')
 const { Nuxt, Builder } = require('nuxt')
+const bodyParser = require('koa-bodyparser')
 const app = new Koa();
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3001
 
 require('./middleware/cors')(app)
 require('./middleware/session')(app)
+
+app.use(bodyParser())
 
 const api = require('./api/index')
 app.use(api.routes()).use(api.allowedMethods())
