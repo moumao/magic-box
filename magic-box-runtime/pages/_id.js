@@ -5,32 +5,64 @@ import componentList from '~/components/components_list/index'
 import { componentFactory, distributeData, jsonToObjEscape} from '~/utils/utils.js'
 
 export default Vue.component('componentFactory', {
-    validate({ params }) {
-        return !isNaN(+params.id)
-    },
 
     async asyncData({ params, error }) {
         try {
             const { id } = params;
+            if( id === 'new' ) {
+                return {
+                    schema: {
+                      baseData: {
+                      		title: "",
+                      		description: "",
+                      		bg: ""
+                      	},
+                      	meta: {
+
+                      	},
+                      	components: null
+                    }
+                }
+            }
             const { data } = await axios.get(`/api/schema/getById?id=${id}`)
-            const { schemaData } = data;
-            const { schema } = schemaData;
-            return { schema: JSON.parse(jsonToObjEscape(schema))}
+            const { schemaDataList } = data
+            const { schemaData } = schemaDataList
+            return { schema: JSON.parse(schemaData)}
         } catch (e) {
             error({ message: 'Page not found', statusCode: 404 })
         }
     },
 
     created: function () {
-        console.log('a is: ' + this.schema)
+        // console.log('a is: ' + this.schema)
+    },
+
+    mounted: function () {
+        const receiveMessageFromIndex = event => {
+            const { data } = event;
+            try {
+                this.schema = JSON.parse(data);
+            } catch (e) {
+                console.log('wrong data');
+            }
+        }
+        window.addEventListener("message", receiveMessageFromIndex, false);
+    },
+
+    beforeUpdate: function () {
+      //  console.log('beforeUpdate');
+    },
+
+    updated: function () {
+      //  console.log('updated');
     },
 
     render: function (createElement) {
-        const { components, baseData } = this.schema;
+        // console.log('render');
         return createElement(
             base,
-            distributeData(baseData),
-            componentFactory(createElement, components, componentList)
+            distributeData(this.schema.baseData),
+            componentFactory(createElement, this.schema.components, componentList)
         )
     }
 })

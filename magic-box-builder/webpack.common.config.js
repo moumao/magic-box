@@ -81,6 +81,15 @@ module.exports = {
                         limit: 8192
                     }
                 }]
+            },
+            {
+                test: /\.(html)$/,
+                use: {
+                    loader: 'html-loader',
+                    options: {
+                        attrs: ['link:href','script:src']
+                    }
+                }
             }
         ]
     },
