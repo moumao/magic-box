@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Icon , Col, Row, Tabs, Card } from 'antd';
 import Iframe from 'react-iframe'
 import { saveSchema } from 'actions/schema';
-import BaseData from './components/BaseData'
-import SchemaData from './components/SchemaData'
+import BaseData from './components/BaseData';
+import SchemaData from './components/SchemaData';
+import ComponentList from './components/ComponentList';
 import styles from './index.css';
 
 
@@ -21,9 +22,11 @@ const mapDispatchToProps = dispatch => {
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Edit extends Component {
     state = {
+        bg: '',
         iFrame: null,
         schema: this.props.edit.schema,
-        id: this.props.match.params.id
+        id: this.props.match.params.id,
+        hadAddImage: false
     }
 
     componentDidMount() {
@@ -31,6 +34,19 @@ export default class Edit extends Component {
         this.setState({
             iFrame
         })
+        window.addEventListener("message", this.receiveMessageFromIframe, false);
+    }
+
+    receiveMessageFromIframe = event => {
+        const { data } = event;
+        const { schema } = this.state;
+        if(typeof data === 'string'){
+            schema['baseData']['bg'] = data;
+            this.setState({
+                schema,
+                hadAddImage: true
+            })
+        }
     }
 
     sendMessage = mes => {
@@ -44,6 +60,31 @@ export default class Edit extends Component {
         })
     }
 
+    saveComToSchemaToState = components => {
+        const { schema } = this.state;
+        schema['components'] = components;
+        this.sendMessage(JSON.stringify(schema));
+        this.setState({
+            schema,
+        })
+    }
+
+    getImageThenSaveSchema = () => {
+        const { iFrame } = this.state;
+        iFrame.contentWindow.postMessage('saveImage', '*');
+        const getBg =  setInterval(() => {
+            const { saveSchema } = this.props;
+            const { schema, id, hadAddImage } = this.state
+            if(hadAddImage) {
+              saveSchema(JSON.stringify(schema), id);
+              this.setState({
+                  hadAddImage: false
+              })
+              clearInterval(getBg);
+            }
+        }, 50)
+    }
+
     back = () => {
         const { history } = this.props
         const { push } = history;
@@ -51,8 +92,9 @@ export default class Edit extends Component {
     }
 
     render() {
+        const { schema } = this.state;
         const { edit, saveSchema, match } = this.props;
-        const { schema, url } = edit;
+        const { url } = edit;
         const { baseData, components, meta } = schema;
         const { params } = match;
 
@@ -62,27 +104,31 @@ export default class Edit extends Component {
                     <Col span={2}>
                         <Card className={styles['component-list']} bodyStyle={{padding: 12}}>
                             <Icon type="left" onClick={this.back} className={styles['component-box']} />
-                            <Icon type="save" onClick={saveSchema.bind(null, JSON.stringify(this.state.schema), this.state.id)} className={styles['component-box']} />
-                        </Card>
+                            <Icon type="save" onClick={this.getImageThenSaveSchema} className={styles['component-box']} />
+                            <Icon type="upload" className={styles['component-box']}/>
+                      </Card>
                     </Col>
                     <Col span={8}>
-                            <Iframe
-                                className={styles['iframe-box']}
-                                url={params.id === "new" ? "http://127.0.0.1:3001/new" : url}
-                                id="myIframe"
-                                width="400px"
-                                height="650px"
-                                display="initial"
-                                position="relative"
-                                className={styles['iframe']}
-                                allowFullScreen/>
+                            <div >
+                                <Iframe
+                                    url={params.id === "new" ? "http://127.0.0.1:3001/new" : url}
+                                    id="myIframe"
+                                    width="400px"
+                                    height="650px"
+                                    display="initial"
+                                    position="relative"
+                                    className={styles['iframe']}
+                                    allowFullScreen/>
+                            </div>
                     </Col>
                     <Col span={14}>
                         <Tabs defaultActiveKey="1" onChange={() => {}}>
                             <TabPane tab="基本信息" key="1">
                                 <BaseData baseData={baseData} meta={meta} />
                             </TabPane>
-                            <TabPane tab="组件配置" key="2">Content of Tab Pane 2</TabPane>
+                            <TabPane tab="组件配置" key="2">
+                                <ComponentList saveComToSchemaToState={this.saveComToSchemaToState} components={components} />
+                            </TabPane>
                             <TabPane tab="事件配置" key="3">Content of Tab Pane 3</TabPane>
                             <TabPane tab="全局配置" key="4">Content of Tab Pane 3</TabPane>
                             <TabPane tab="schema信息" key="5">

@@ -74,13 +74,12 @@ router.post('/save', async ctx => {
         try {
             const res = await getMaxId()
             const MaxId = res[0]['max(id)']
-            console.log(MaxId);
             const resData = await insterSchema([MaxId+1, userName, schema, `http://127.0.0.1:3001/${MaxId+1}`])
             ctx.body = { 'state_code': '0' }
         } catch (e) {
             ctx.body = { 'state_code': e }
         }
-    }else {
+    } else {
         try {
             const res = await updateSchema([schema, id])
             ctx.body = { 'state_code': '0' }

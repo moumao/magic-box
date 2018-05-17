@@ -2,6 +2,7 @@ import  Vue from 'vue';
 import base from '~/components/common/base/index.vue'
 import axios from 'axios'
 import componentList from '~/components/components_list/index'
+import domtoimage from 'dom-to-image';
 import { componentFactory, distributeData, jsonToObjEscape} from '~/utils/utils.js'
 
 export default Vue.component('componentFactory', {
@@ -39,8 +40,20 @@ export default Vue.component('componentFactory', {
 
     mounted: function () {
         const receiveMessageFromIndex = event => {
-            const { data } = event;
+            const { data, source } = event;
+            if(data === 'saveImage') {
+              const node = document.getElementById('page');
+              domtoimage.toJpeg(node)
+                .then(dataUrl => {
+                    source.postMessage(dataUrl, '*')
+                })
+                .catch(error => {
+                    console.error('oops, something went wrong!', error);
+                });
+              return
+            }
             try {
+                console.log(this.schema);
                 this.schema = JSON.parse(data);
             } catch (e) {
                 console.log('wrong data');

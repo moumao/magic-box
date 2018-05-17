@@ -20,7 +20,7 @@ export const PageCard = ({ schemaData, deleteSchemaById, push, getEditSchema }) 
     return (
         <Card
           className={styles['page-card']}
-          cover={<img alt="缩略图" src={bg} />}
+          cover={<div className={styles['page-img']} style={{backgroundImage: `url(${bg})`}} />}
           hoverable={true}
           bodyStyle={{
               position: 'absolute',
