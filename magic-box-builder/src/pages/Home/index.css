@@ -28,7 +28,8 @@
   background-position:center;
 }
 .page-img {
-  width: 300px;
+  border-radius: 3px;
+  width: 298px;
   height: 481px;
   background-size: cover;
   background-repeat:no-repeat;

@@ -13,7 +13,7 @@ require('./middleware/session')(app)
 app.use(bodyParser())
 
 app.use(static(
-  path.join( __dirname,  './static')
+  path.join( __dirname,  './api/static')
 ))
 
 const api = require('./api/index')

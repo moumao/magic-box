@@ -2,6 +2,9 @@ export const componentFactory = (createElement, components, componentList) => {
   const res = [];
   if (components && Array.isArray(components)){
     const list = components.map(component => {
+      if (typeof component === 'string'){
+          return component;
+      }
       const { type, components, data } = component;
       return createElement(getComponent(componentList, type), distributeData(data),
         componentFactory(createElement, components, componentList))

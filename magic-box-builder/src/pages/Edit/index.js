@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Icon , Col, Row, Tabs, Card } from 'antd';
+import { Icon , Col, Row, Tabs, Card, Modal, Upload, message, Button } from 'antd';
+import { jsonToObjEscape } from 'util/json'
 import Iframe from 'react-iframe'
 import { saveSchema } from 'actions/schema';
 import BaseData from './components/BaseData';
@@ -26,7 +27,9 @@ export default class Edit extends Component {
         iFrame: null,
         schema: this.props.edit.schema,
         id: this.props.match.params.id,
-        hadAddImage: false
+        hadAddImage: false,
+        uploadVisible: false,
+        fileList: []
     }
 
     componentDidMount() {
@@ -58,15 +61,18 @@ export default class Edit extends Component {
         this.setState({
             schema,
         })
+        // this.forceUpdate()
     }
 
     saveComToSchemaToState = components => {
         const { schema } = this.state;
         schema['components'] = components;
+        const copyCom = JSON.stringify(schema);
         this.sendMessage(JSON.stringify(schema));
         this.setState({
             schema,
         })
+        // this.forceUpdate()
     }
 
     getImageThenSaveSchema = () => {
@@ -91,12 +97,58 @@ export default class Edit extends Component {
         push(`/`)
     }
 
+    showUploadModal = () => {
+        this.setState({
+          uploadVisible: true,
+        });
+    }
+
+    uploadHandleCancel = (e) => {
+        this.setState({
+          uploadVisible: false,
+        });
+    }
+
+    uploadHandleOk = (e) => {
+        this.setState({
+          uploadVisible: false,
+        });
+    }
+
+    handleChange = (info) => {
+        let fileList = info.fileList;
+
+        // 2. read from response and show file link
+        fileList = fileList.map((file) => {
+         if (file.response) {
+           // Component will show file.url as link
+           file.url = `http:${file.response.url}`;
+         }
+         return file;
+        });
+
+        // 3. filter successfully uploaded files according to response from server
+        fileList = fileList.filter((file) => {
+         if (file.response) {
+           return file.response.status === 'success';
+         }
+         return true;
+        });
+
+        this.setState({ fileList });
+    }
+
     render() {
-        const { schema } = this.state;
+        const { schema, uploadVisible, list, fileList} = this.state;
         const { edit, saveSchema, match } = this.props;
         const { url } = edit;
         const { baseData, components, meta } = schema;
         const { params } = match;
+        const uploadProps = {
+            action: 'http://my.magic.com/api/picture/upload',
+            onChange: this.handleChange,
+            multiple: true,
+        };
 
         return(
             <div>
@@ -105,7 +157,19 @@ export default class Edit extends Component {
                         <Card className={styles['component-list']} bodyStyle={{padding: 12}}>
                             <Icon type="left" onClick={this.back} className={styles['component-box']} />
                             <Icon type="save" onClick={this.getImageThenSaveSchema} className={styles['component-box']} />
-                            <Icon type="upload" className={styles['component-box']}/>
+                            <Icon type="upload"  onClick={this.showUploadModal} className={styles['component-box']}/>
+                            <Modal
+                                title="上传图片"
+                                visible={uploadVisible}
+                                onOk={this.uploadHandleOk}
+                                onCancel={this.uploadHandleCancel}
+                              >
+                                  <Upload {...uploadProps} fileList={fileList}>
+                                      <Button>
+                                          请选择文件
+                                      </Button>
+                                  </Upload>
+                            </Modal>
                       </Card>
                     </Col>
                     <Col span={8}>
@@ -129,8 +193,6 @@ export default class Edit extends Component {
                             <TabPane tab="组件配置" key="2">
                                 <ComponentList saveComToSchemaToState={this.saveComToSchemaToState} components={components} />
                             </TabPane>
-                            <TabPane tab="事件配置" key="3">Content of Tab Pane 3</TabPane>
-                            <TabPane tab="全局配置" key="4">Content of Tab Pane 3</TabPane>
                             <TabPane tab="schema信息" key="5">
                                 <SchemaData schema={schema} saveSchemaState={this.saveSchemaState} sendMessage={this.sendMessage} />
                             </TabPane>

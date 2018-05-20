@@ -1,18 +1,12 @@
 <template>
   <div class="btn-default">
-    <slot>{{ innerText || text }}</slot>
+    <slot>按钮</slot>
   </div>
 </template>
 
 <script>
 
 export default {
-  props: ['innerText'],
-  data: function () {
-     return {
-         text: '按钮'
-       }
-  }
 }
 </script>
 

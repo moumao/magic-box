@@ -50,6 +50,7 @@
     "dom-to-image": "^2.6.0",
     "iframe2image": "^0.2.1",
     "qrcode.react": "^0.8.0",
+    "rc-color-picker": "^1.2.6",
     "react": "^16.3.2",
     "react-addons-css-transition-group": "^15.6.2",
     "react-codemirror": "^1.0.0",

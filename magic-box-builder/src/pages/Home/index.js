@@ -60,7 +60,7 @@ export default class Home extends Component {
                   	meta: {
 
                   	},
-                  	components: null
+                  	components: []
                 }
             });
             push(`/edit/new`)

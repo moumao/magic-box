@@ -13,9 +13,28 @@ export default class SchemaData extends Component {
         schema: JSON.stringify(this.props.schema, null, 4)
     }
 
-    render() {
-        const { sendMessage, saveSchemaState } = this.props;
+    // getDerivedStateFromProps(nextProps, prevState) {
+    //     console.log(nextProps);
+    //     return {
+    //       schema: JSON.stringify(nextProps.schema, null, 4)
+    //     };
+    // }
+    //
+    // componentWillUpdate(nextProps, nextState) {
+    //     console.log(nextProps);
+    //     this.setState({schema: JSON.stringify(nextProps.schema, null, 4)});
+    // }
+    //
+    // shouldComponentUpdate(nextProps, nextState) {
+    //   const next = JSON.stringify(nextState.schema, null, 4)
+    //   const { schema } = this.state;
+    //   console.log(next === schema);
+    //   return  schema === next ? false : true;
+    // }
 
+    render() {
+        const { sendMessage, saveSchemaState, schema } = this.props;
+        console.log('render schema');
         return (
             <div className={styles['schema-data']}>
                 <CodeMirror
@@ -30,8 +49,8 @@ export default class SchemaData extends Component {
                         this.setState({schema: value});
                     }}
                     onChange={(editor, data, value) => {
-                        saveSchemaState(JSON.parse(jsonToObjEscape(editor)))
-                        sendMessage(editor)
+                        saveSchemaState(JSON.parse(jsonToObjEscape(editor)));
+                        sendMessage(editor);
                     }}
                 />
             </div>
