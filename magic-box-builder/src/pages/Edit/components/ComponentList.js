@@ -6,6 +6,7 @@ import styles from '../index.css';
 
 const { TextArea } = Input;
 const { TreeNode } = Tree;
+const { Item } = Menu;
 
 export default class ComponentList extends Component {
 
@@ -15,7 +16,7 @@ export default class ComponentList extends Component {
     }
 
     onSelect = selectedKeys => {
-        const { components, saveComToSchemaToState } = this.props;
+        const { components, saveComToState } = this.props;
         const select = selectedKeys[0].split('-');
         if (select.length === 1) {
             this.setState({
@@ -54,45 +55,58 @@ export default class ComponentList extends Component {
           type: type,
           data: {
               style: {
-                  width: "200px",
-                  height: "300px"
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center',
               },
-              props: {}
+              props: {},
+              domProps: {},
+              nativeOn: {},
+              attrs: {},
+              on: {}
           },
           components: []
       })
 
-    handleMenuClick = ({key}) => {
-        const { selectCom } = this.state;
-        const { components, saveComToSchemaToState} = this.props;
-        switch (key) {
-          case 'div':
-              Array.isArray(selectCom)
-                ? selectCom.push(this.getBase('div'))
-                : selectCom['components'].push(this.getBase('div'));
-              this.setState({
-                  selectCom
-              });
-              saveComToSchemaToState(components);
-          case 'button':
-
-          default:
-
+    handleMenuClick = ({ key }) => {
+        if (key){
+            const { selectCom } = this.state;
+            const { components, saveComToState} = this.props;
+            Array.isArray(selectCom)
+              ? selectCom.push(this.getBase(key))
+              : selectCom['components'].push(this.getBase(key));
+            this.setState({
+                selectCom
+            });
+            saveComToState(components);
         }
     }
 
     menu = () => {
         return (
           <Menu onClick={this.handleMenuClick}>
-            <Menu.Item key="div">div</Menu.Item>
-            <Menu.Item key="button">button</Menu.Item>
+              <Item key="div">盒子</Item>
+              <Item key="button">按钮</Item>
+              <Item key="span">标签</Item>
+              <Item key="br">换行</Item>
+              <Item key="nav">导航</Item>
+              <Item key="ul">ul</Item>
+              <Item key="li">li</Item>
+              <Item key="p">文字段落</Item>
+              <Item key="a">连接</Item>
+              <Item key="h1">一号标题</Item>
+              <Item key="h2">二号标题</Item>
+              <Item key="h3">三号标题</Item>
+              <Item key="h4">四号标题</Item>
+              <Item key="h5">五号标题</Item>
+              <Item key="h6">六号标题</Item>
           </Menu>
         );
     }
 
     render() {
         const { selectCom, selectIndex } = this.state;
-        const { components, saveComToSchemaToState} = this.props;
+        const { components, saveComToState} = this.props;
         return (
             <div>
                 <Row type="flex" align="top" justify="center">
@@ -100,6 +114,7 @@ export default class ComponentList extends Component {
                         <Tree
                           showLine
                           onSelect={this.onSelect}
+                          treeDefaultExpandAll={true}
                         >
                             {React.createElement(TreeNode, {key: "0", title: "页面"}, this.renderChild(components, "0"))}
                         </Tree>
@@ -124,7 +139,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                       />
                                       <br/>
@@ -137,7 +152,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -150,7 +165,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -163,7 +178,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -176,7 +191,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -189,7 +204,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -202,7 +217,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -215,7 +230,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -228,7 +243,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -241,7 +256,20 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
+                                          }}
+                                        />
+                                      <br/>
+                                      <span>背景图片：</span>
+                                      <Input
+                                          style={{width: 200, marginBottom: 8}}
+                                          value={selectCom['data']['style']['background-image']}
+                                          onChange={e => {
+                                              selectCom['data']['style']['background-image'] = e.target.value;
+                                              this.setState({
+                                                  selectCom
+                                              });
+                                              saveComToState(components);
                                           }}
                                         />
                                       <br/>
@@ -255,7 +283,7 @@ export default class ComponentList extends Component {
                                                       this.setState({
                                                           selectCom
                                                       });
-                                                      saveComToSchemaToState(components);
+                                                      saveComToState(components);
                                                   }}
                                                 />
                                       </div>
@@ -269,7 +297,7 @@ export default class ComponentList extends Component {
                                                       this.setState({
                                                           selectCom
                                                       });
-                                                      saveComToSchemaToState(components);
+                                                      saveComToState(components);
                                                   }}
                                                 />
                                       </div>
@@ -283,7 +311,7 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                       />
                                       <Button
@@ -301,16 +329,41 @@ export default class ComponentList extends Component {
                                               this.setState({
                                                   selectCom: ''
                                               });
-                                              saveComToSchemaToState(components);
+                                              saveComToState(components);
                                           }}
                                         >删除该组件</Button>
                                   </div>
                               )}
                           </div>) : <div>请选择组件进行编辑</div>}
                     </Col>
-                    <Col span={9}>{selectCom && (
+                    <Col span={9}>{selectCom && !Array.isArray(selectCom) && (
                             <div>
-                                其他
+                                <span>href属性：</span>
+                                <Input
+                                    style={{width: 200, marginBottom: 8}}
+                                    value={selectCom['data']['domProps']['href'] || ''}
+                                    onChange={e => {
+                                        selectCom['data']['domProps']['href'] = e.target.value;
+                                        this.setState({
+                                            selectCom
+                                        });
+                                        saveComToState(components);
+                                    }}
+                                  />
+                                <br/>
+                                <span>点击事件：</span>
+                                <Input
+                                    style={{width: 200, marginBottom: 8}}
+                                    value={selectCom['data']['nativeOn']['click'] || ''}
+                                    onChange={e => {
+                                        selectCom['data']['nativeOn']['click'] = e.target.value;
+                                        selectCom['data']['on']['click'] = e.target.value;
+                                        this.setState({
+                                            selectCom
+                                        });
+                                        saveComToState(components);
+                                    }}
+                                  />
                             </div>
                         )}
                     </Col>

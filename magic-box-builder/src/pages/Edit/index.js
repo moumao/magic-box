@@ -57,22 +57,30 @@ export default class Edit extends Component {
         iFrame.contentWindow.postMessage(mes, '*');
     }
 
-    saveSchemaState = schema => {
+    saveSchemaState = components => {
+      const { schema } = this.state;
+      schema['components'] = components;
+      this.sendMessage(JSON.stringify(schema));
         this.setState({
             schema,
-        })
-        // this.forceUpdate()
+        });
     }
 
-    saveComToSchemaToState = components => {
+    saveComToState = components => {
         const { schema } = this.state;
         schema['components'] = components;
-        const copyCom = JSON.stringify(schema);
         this.sendMessage(JSON.stringify(schema));
         this.setState({
             schema,
-        })
-        // this.forceUpdate()
+        });
+    }
+
+    saveBaseToState = components => {
+        const { schema } = this.state;
+        schema['baseData'] = components;
+        this.setState({
+            schema,
+        });
     }
 
     getImageThenSaveSchema = () => {
@@ -103,37 +111,35 @@ export default class Edit extends Component {
         });
     }
 
-    uploadHandleCancel = (e) => {
+    uploadHandleCancel = () => {
         this.setState({
           uploadVisible: false,
         });
     }
 
-    uploadHandleOk = (e) => {
+    uploadHandleOk = () => {
         this.setState({
           uploadVisible: false,
         });
     }
 
-    handleChange = (info) => {
+    handleChange = info => {
         let fileList = info.fileList;
 
-        // 2. read from response and show file link
         fileList = fileList.map((file) => {
          if (file.response) {
-           // Component will show file.url as link
-           file.url = `http:${file.response.url}`;
+           file.url = file.response.data.pictureUrl;
          }
          return file;
         });
 
-        // 3. filter successfully uploaded files according to response from server
-        fileList = fileList.filter((file) => {
-         if (file.response) {
-           return file.response.status === 'success';
-         }
-         return true;
-        });
+        // // 3. filter successfully uploaded files according to response from server
+        // fileList = fileList.filter((file) => {
+        //  if (file.response) {
+        //    return file.response.status === 'success';
+        //  }
+        //  return true;
+        // });
 
         this.setState({ fileList });
     }
@@ -145,6 +151,7 @@ export default class Edit extends Component {
         const { baseData, components, meta } = schema;
         const { params } = match;
         const uploadProps = {
+            accept: 'image',
             action: 'http://my.magic.com/api/picture/upload',
             onChange: this.handleChange,
             multiple: true,
@@ -173,7 +180,7 @@ export default class Edit extends Component {
                       </Card>
                     </Col>
                     <Col span={8}>
-                            <div >
+                            <div>
                                 <Iframe
                                     url={params.id === "new" ? "http://127.0.0.1:3001/new" : url}
                                     id="myIframe"
@@ -188,13 +195,13 @@ export default class Edit extends Component {
                     <Col span={14}>
                         <Tabs defaultActiveKey="1" onChange={() => {}}>
                             <TabPane tab="基本信息" key="1">
-                                <BaseData baseData={baseData} meta={meta} />
+                                <BaseData baseData={baseData} meta={meta} saveBaseToState={this.saveBaseToState}/>
                             </TabPane>
                             <TabPane tab="组件配置" key="2">
-                                <ComponentList saveComToSchemaToState={this.saveComToSchemaToState} components={components} />
+                                <ComponentList saveComToState={this.saveComToState} components={components} />
                             </TabPane>
                             <TabPane tab="schema信息" key="5">
-                                <SchemaData schema={schema} saveSchemaState={this.saveSchemaState} sendMessage={this.sendMessage} />
+                                <SchemaData components={components} saveComToState={this.saveComToState} />
                             </TabPane>
                         </Tabs>
                     </Col>

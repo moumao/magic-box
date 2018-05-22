@@ -18,7 +18,7 @@ export const distributeData = data => {
   const res = {};
   if (data && typeof data === 'object'){
     for(let key in data){
-      if(key === 'style' || key === 'props' || key === 'domProps' || key === 'class' || key === 'attrs'){
+      if(key === 'style' || key === 'props' || key === 'domProps' || key === 'class' || key === 'attrs' || key === 'on'){
         res[key] = data[key];
       }
       if(key === 'nativeOn'){
@@ -33,7 +33,13 @@ export const distributeData = data => {
 }
 
 export const getComponent = (componentList, type) => {
-  if(type === 'div'){
+  if(type === 'div' || type === 'span' || type === 'section'
+        || type === 'br' || type === 'nav'
+        || type === 'ul' || type === 'li'
+        || type === 'h1' || type === 'h2'
+        || type === 'h3' || type === 'h4'
+        || type === 'h5' || type === 'h6'
+        || type === 'p' || type === 'a' ){
     return type
   }
   return componentList[type]

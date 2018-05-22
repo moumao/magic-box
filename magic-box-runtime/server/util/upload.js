@@ -68,7 +68,7 @@ function uploadFile( ctx, options) {
         result.success = true
         result.message = '文件上传成功'
         result.data = {
-          pictureUrl: `//${ctx.host}/image/${fileType}/${fileName}`
+          pictureUrl: `http://127.0.0.1:3001/image/${fileType}/${fileName}`
         }
         console.log('文件上传成功！')
         resolve(result)

@@ -10,35 +10,15 @@ import 'codemirror/mode/javascript/javascript';
 
 export default class SchemaData extends Component {
     state = {
-        schema: JSON.stringify(this.props.schema, null, 4)
+        components: JSON.stringify(this.props.components, null, 4)
     }
 
-    // getDerivedStateFromProps(nextProps, prevState) {
-    //     console.log(nextProps);
-    //     return {
-    //       schema: JSON.stringify(nextProps.schema, null, 4)
-    //     };
-    // }
-    //
-    // componentWillUpdate(nextProps, nextState) {
-    //     console.log(nextProps);
-    //     this.setState({schema: JSON.stringify(nextProps.schema, null, 4)});
-    // }
-    //
-    // shouldComponentUpdate(nextProps, nextState) {
-    //   const next = JSON.stringify(nextState.schema, null, 4)
-    //   const { schema } = this.state;
-    //   console.log(next === schema);
-    //   return  schema === next ? false : true;
-    // }
-
     render() {
-        const { sendMessage, saveSchemaState, schema } = this.props;
-        console.log('render schema');
+        const { saveComToState, components } = this.props;
         return (
             <div className={styles['schema-data']}>
                 <CodeMirror
-                    value={this.state.schema}
+                    value={this.state.components}
                     options={{
                       scrollbarStyle: null,
                       mode: 'javascript',
@@ -46,11 +26,11 @@ export default class SchemaData extends Component {
                       lineNumbers: true
                     }}
                     onBeforeChange={(editor, data, value) => {
-                        this.setState({schema: value});
+                        this.setState({components: value});
                     }}
                     onChange={(editor, data, value) => {
-                        saveSchemaState(JSON.parse(jsonToObjEscape(editor)));
-                        sendMessage(editor);
+                        saveComToState(JSON.parse(jsonToObjEscape(editor)));
+                        // sendMessage(editor);
                     }}
                 />
             </div>

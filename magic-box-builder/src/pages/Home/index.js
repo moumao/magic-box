@@ -55,7 +55,7 @@ export default class Home extends Component {
                   baseData: {
                   		title: "newPage",
                   		description: "this is my new page",
-                  		bg: "https://ss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/v1/mms-fe-res/a75586048b7d091b28285bc1634aae03.png?authorization=bce-auth-v1%2F811063cfc7e5437ca7ee572a8d4ef98a%2F2017-05-09T07%3A43%3A41Z%2F1800%2Fhost%2Fea8064418af647741a4394aab55f0a1103d91a56dafd878b2af16d389548b663"
+                  		bg: ""
                   	},
                   	meta: {
 
